@@ -1,10 +1,8 @@
-import * as Jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import * as fs from 'fs/promises';
 import { UserCredentials } from '../domain';
 
 class LoginService {
-  private _jwt = Jwt;
-
   private _secret: string;
 
   constructor() {
@@ -18,7 +16,7 @@ class LoginService {
   }
 
   public login(login: UserCredentials) {
-    return this._jwt.sign(login, this._secret);
+    return jwt.sign(login, this._secret);
   }
 }
 
