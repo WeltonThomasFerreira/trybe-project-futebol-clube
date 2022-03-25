@@ -1,5 +1,6 @@
 import * as express from 'express';
 import bodyParser = require('body-parser');
+import cors = require('cors');
 import loginRoute from './api/routes/login.route';
 import errorHandler from './api/middlewares/errorhandler.middleware';
 
@@ -27,6 +28,7 @@ class App {
 
   public middlewares(): void {
     this.app.use(bodyParser.json());
+    this.app.use(cors());
   }
 
   public routes(): void {
