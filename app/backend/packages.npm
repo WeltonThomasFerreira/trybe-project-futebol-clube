@@ -3,4 +3,4 @@ body-parser
 bcrypt
 @types/bcrypt
 ts-custom-error
-express-rescue
+chai-subset
