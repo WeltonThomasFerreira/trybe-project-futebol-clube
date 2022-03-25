@@ -4,3 +4,4 @@ bcrypt
 @types/bcrypt
 ts-custom-error
 chai-subset
+@types/chai-subset
