@@ -5,8 +5,8 @@ const loginRoute = Router();
 
 loginRoute.post('/', async (req, res, next) => {
   try {
-    const token = await loginController.post(req.body);
-    return res.status(200).json({ token });
+    const response = await loginController.post(req.body);
+    return res.status(200).json(response);
   } catch (error) {
     next(error);
   }
