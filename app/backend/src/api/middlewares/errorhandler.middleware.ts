@@ -1,11 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { CustomError } from 'ts-custom-error';
-
-class HttpError extends CustomError {
-  public constructor(public code: number, message?: string) {
-    super(message);
-  }
-}
+import HttpError from '../../errors/HttpError';
 
 const errorHandler = async (
   err: HttpError,
@@ -15,6 +9,6 @@ const errorHandler = async (
 ) =>
   res
     .status(err.code || 500)
-    .json({ error: err.message || 'Internal Server Error' });
+    .json({ message: err.message || 'Internal Server Error' });
 
 export default errorHandler;

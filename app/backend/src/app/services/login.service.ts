@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { UserCredentials } from '../domain';
 
 import User from '../../database/models/User.model';
-import INCORRECT_EMAIL_OR_PASSWORD from './errors/login.error';
+import { INCORRECT_EMAIL_OR_PASSWORD } from '../errors/login.error';
 
 class LoginService {
   private _secret: string;
