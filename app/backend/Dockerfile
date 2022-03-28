@@ -2,11 +2,11 @@ FROM node:16-alpine AS backend
 
 WORKDIR /backend
 
-COPY ["package.json", "."]
+COPY package.json .
 
 RUN ["npm", "install"]
 
-COPY [".", "."]
+COPY . .
 
 EXPOSE 3001
 
