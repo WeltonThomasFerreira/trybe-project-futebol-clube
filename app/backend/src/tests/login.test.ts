@@ -25,21 +25,61 @@ describe('POST /login', () => {
     chai
       .request(app)
       .post('/login')
-      .send({ email: 'email@email.com', password: 'secret_password' })
+      .send({ email: 'email@email.com', password: 'secret_admin' })
       .end((err, res: Response) => {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
+        expect(res.body).to.haveOwnProperty('token');
       });
   });
 
-  it('should return status 401', async () => {
+  it('should return status 401 and message "All fields must be filled"', async () => {
     chai
       .request(app)
       .post('/login')
-      .send({ email: 'wrong_email', password: 'wrong_password' })
-      .end((err, res: Response) => {
-        expect(err).to.be.null;
+      .send({ password: 'secret_admin' })
+      .end((_err, res: Response) => {
         expect(res).to.have.status(401);
+        expect(res.body)
+          .to.haveOwnProperty('message')
+          .to.be.equal('All fields must be filled');
+      });
+
+    chai
+      .request(app)
+      .post('/login')
+      .send({ email: 'email@email.com' })
+      .end((_err, res: Response) => {
+        expect(res).to.have.status(401);
+        expect(res.body)
+          .to.haveOwnProperty('message')
+          .to.be.equal('All fields must be filled');
+      });
+  });
+
+  it('should return status 401 and message "Incorrect email or password"', async () => {
+    chai
+      .request(app)
+      .post('/login')
+      .send({ email: 'wrong_email', password: 'secret_admin' })
+      .end((_err, res: Response) => {
+        expect(res).to.have.status(401);
+        expect(res.body)
+          .to.haveOwnProperty('message')
+          .to.be.equal('Incorrect email or password');
+      });
+
+    chai
+      .request(app)
+      .post('/login')
+      .send({ email: 'email@email.com', password: 'wrong_admin' })
+      .end((_err, res: Response) => {
+        console.log(res.body);
+
+        expect(res).to.have.status(401);
+        expect(res.body)
+          .to.haveOwnProperty('message')
+          .to.be.equal('Incorrect email or password');
       });
   });
 });
