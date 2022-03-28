@@ -2,7 +2,7 @@ import loginValidation from '../validations/login.validation';
 import loginService from '../services/login.service';
 import { UserCredentials } from '../domain';
 
-class LoginController {
+export class LoginController {
   private _loginValidation = loginValidation;
 
   private _loginService = loginService;

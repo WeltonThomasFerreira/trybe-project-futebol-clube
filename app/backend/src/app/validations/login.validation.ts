@@ -5,7 +5,7 @@ import {
   INCORRECT_EMAIL_OR_PASSWORD,
 } from '../errors/login.error';
 
-class LoginValidation {
+export class LoginValidation {
   private _isRequired = Joi.object({
     email: Joi.string().required(),
     password: Joi.string().required(),
