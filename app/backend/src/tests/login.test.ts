@@ -7,6 +7,9 @@ import { app } from '../app';
 import { Response } from 'superagent';
 import { stubValue } from './utils/login.util';
 import User from '../database/models/User.model';
+import { LoginService } from '../app/services/login.service';
+import { LoginValidation } from '../app/validations/login.validation';
+import { UserCredentials } from '../app/domain';
 
 chai.use(chaiHttp);
 
@@ -74,12 +77,109 @@ describe('POST /login', () => {
       .post('/login')
       .send({ email: 'email@email.com', password: 'wrong_admin' })
       .end((_err, res: Response) => {
-        console.log(res.body);
-
         expect(res).to.have.status(401);
         expect(res.body)
           .to.haveOwnProperty('message')
           .to.be.equal('Incorrect email or password');
       });
+  });
+
+  // LoginService.login
+  describe('loginService', () => {
+    const loginService = new LoginService();
+
+    it('should return object with token', async () => {
+      const response = await loginService.login({
+        email: 'email@email.com',
+        password: 'secret_admin',
+      });
+
+      expect(response).to.haveOwnProperty('token');
+    });
+
+    it('should return error message "Incorrect email or password"', async () => {
+      try {
+        await loginService.login({
+          email: 'wrong_email',
+          password: 'secret_admin',
+        });
+      } catch (error) {
+        expect(error)
+          .to.haveOwnProperty('message')
+          .to.be.equal('Incorrect email or password');
+      }
+
+      try {
+        await loginService.login({
+          email: 'email@email.com',
+          password: 'wrong_password',
+        });
+      } catch (error) {
+        expect(error)
+          .to.haveOwnProperty('message')
+          .to.be.equal('Incorrect email or password');
+      }
+    });
+  });
+
+  // LoginValidation.validate
+  describe('loginValidation', () => {
+    const loginValidation = new LoginValidation();
+    const credentials = {
+      email: 'email@email.com',
+      password: 'secret_admin',
+    };
+
+    it('should return validated object ', async () => {
+      const response = await loginValidation.validate(credentials);
+
+      expect(response).to.be.deep.equal(credentials);
+    });
+
+    it('should return error message "All fields must be filled"', async () => {
+      try {
+        await loginValidation.validate({
+          email: 'email@email.com',
+        } as UserCredentials);
+      } catch (error) {
+        expect(error)
+          .to.haveOwnProperty('message')
+          .to.be.equal('All fields must be filled');
+      }
+
+      try {
+        await loginValidation.validate({
+          password: 'secret_admin',
+        } as UserCredentials);
+      } catch (error) {
+        expect(error)
+          .to.haveOwnProperty('message')
+          .to.be.equal('All fields must be filled');
+      }
+    });
+
+    it('should return error message "Incorrect email or password"', async () => {
+      try {
+        await loginValidation.validate({
+          email: 'wrong_email',
+          password: 'password',
+        });
+      } catch (error) {
+        expect(error)
+          .to.haveOwnProperty('message')
+          .to.be.equal('Incorrect email or password');
+      }
+
+      try {
+        await loginValidation.validate({
+          email: 'email@email.com',
+          password: 'wp',
+        });
+      } catch (error) {
+        expect(error)
+          .to.haveOwnProperty('message')
+          .to.be.equal('Incorrect email or password');
+      }
+    });
   });
 });
