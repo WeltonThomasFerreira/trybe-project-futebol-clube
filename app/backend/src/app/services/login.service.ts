@@ -1,6 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import * as fs from 'fs/promises';
 import * as bcrypt from 'bcrypt';
+import { JwtPayload } from 'jsonwebtoken';
 import { UserCredentials } from '../domain';
 
 import User from '../../database/models/User.model';
@@ -41,6 +42,14 @@ export class LoginService {
     const passwordIsValid = await bcrypt.compare(login.password, user.password);
     if (passwordIsValid) return this._mapUser(user);
     throw INCORRECT_EMAIL_OR_PASSWORD;
+  }
+
+  public async authorize(authorization: string | undefined) {
+    const decoded = jwt.verify(
+      authorization as string,
+      this._secret,
+    ) as JwtPayload;
+    if ('role' in decoded) return decoded.role;
   }
 }
 
