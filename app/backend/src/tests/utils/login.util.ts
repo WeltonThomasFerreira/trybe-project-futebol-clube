@@ -1,4 +1,4 @@
-export const userResolve = {
+export const stubValue = {
   id: 1,
   username: 'Username',
   role: 'role',
