@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('POST /login', () => {
+describe('login', () => {
   before(async () => {
     sinon.stub(User, 'findOne').resolves(stubValue as User);
   });
@@ -21,7 +21,7 @@ describe('POST /login', () => {
     (User.findOne as sinon.SinonStub).restore();
   });
 
-  it('should return status 200', async () => {
+  it('POST /login should return status 200', async () => {
     chai
       .request(app)
       .post('/login')
@@ -33,7 +33,7 @@ describe('POST /login', () => {
       });
   });
 
-  it('should return status 401 and message "All fields must be filled"', async () => {
+  it('POST /login should return status 401 and message "All fields must be filled"', async () => {
     chai
       .request(app)
       .post('/login')
@@ -57,7 +57,7 @@ describe('POST /login', () => {
       });
   });
 
-  it('should return status 401 and message "Incorrect email or password"', async () => {
+  it('POST /login should return status 401 and message "Incorrect email or password"', async () => {
     chai
       .request(app)
       .post('/login')
@@ -81,7 +81,7 @@ describe('POST /login', () => {
       });
   });
 
-  it('/validate should return user role', async () => {
+  it('GET /login/validate should return user role', async () => {
     chai
       .request(app)
       .get('/login/validate')
@@ -92,7 +92,7 @@ describe('POST /login', () => {
       });
   });
 
-  it('/validate should return status 500 and message "Invalid token"', async () => {
+  it('GET /login/validate should return status 500 and message "Invalid token"', async () => {
     chai
       .request(app)
       .get('/login/validate')
