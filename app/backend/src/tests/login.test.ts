@@ -5,7 +5,7 @@ import chaiHttp = require('chai-http');
 import { app } from '../app';
 
 import { Response } from 'superagent';
-import { stubValue } from './utils/login.util';
+import { stubValue, authorization, wrong_authorization } from './utils/login.util';
 import User from '../database/models/User.model';
 
 chai.use(chaiHttp);
@@ -78,6 +78,30 @@ describe('POST /login', () => {
         expect(res.body)
           .to.haveOwnProperty('message')
           .to.be.equal('Incorrect email or password');
+      });
+  });
+
+  it('/validate should return user role', async () => {
+    chai
+      .request(app)
+      .get('/login/validate')
+      .set("Authorization", authorization)
+      .end((_err, res: Response) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.equal('admin');
+      });
+  });
+
+  it('/validate should return status 500 and message "Invalid token"', async () => {
+    chai
+      .request(app)
+      .get('/login/validate')
+      .set("Authorization", wrong_authorization)
+      .end((_err, res: Response) => {
+        expect(res).to.have.status(500);
+        expect(res.body)
+          .to.haveOwnProperty('message')
+          .to.be.equal('invalid token');
       });
   });
 });
