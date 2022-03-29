@@ -4,6 +4,7 @@ import cors = require('cors');
 import loginRoute from './api/routes/login.route';
 import errorHandler from './api/middlewares/errorhandler.middleware';
 import clubsRoute from './api/routes/clubs.route';
+import matchsRoute from './api/routes/matchs.route';
 
 class App {
   public app: express.Express;
@@ -35,6 +36,7 @@ class App {
   public routes(): void {
     this.app.use('/login', loginRoute);
     this.app.use('/clubs', clubsRoute);
+    this.app.use('/matchs', matchsRoute);
   }
 
   public errors(): void {
