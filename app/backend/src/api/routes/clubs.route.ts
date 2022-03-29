@@ -12,4 +12,13 @@ clubsRoute.get('/', async (req, res, next) => {
   }
 });
 
+clubsRoute.get('/:id', async (req, res, next) => {
+  try {
+    const response = await clubsController.get(req.params.id);
+    return res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default clubsRoute;
