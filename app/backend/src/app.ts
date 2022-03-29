@@ -3,6 +3,7 @@ import bodyParser = require('body-parser');
 import cors = require('cors');
 import loginRoute from './api/routes/login.route';
 import errorHandler from './api/middlewares/errorhandler.middleware';
+import clubsRoute from './api/routes/clubs.route';
 
 class App {
   public app: express.Express;
@@ -33,6 +34,7 @@ class App {
 
   public routes(): void {
     this.app.use('/login', loginRoute);
+    this.app.use('/clubs', clubsRoute);
   }
 
   public errors(): void {
