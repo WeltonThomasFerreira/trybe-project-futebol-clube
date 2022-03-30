@@ -25,3 +25,8 @@ export interface Teams {
   homeTeam: number;
   awayTeam: number;
 }
+
+export interface GoalsStatus {
+  homeTeamGoals: number;
+  awayTeamGoals: number;
+}

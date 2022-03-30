@@ -1,6 +1,6 @@
 import Joi = require('joi');
 import Club from '../../database/models/Club.model';
-import { NewMatch, Teams } from '../domain';
+import { GoalsStatus, NewMatch, Teams } from '../domain';
 import Match from '../../database/models/Match.model';
 import {
   THERE_IS_NO_TEAM,
@@ -10,13 +10,18 @@ import {
 } from '../errors/matchs.error';
 
 export class MatchsValidation {
-  private _isValid = Joi.object({
+  private _matchIsValid = Joi.object({
     homeTeam: Joi.number().required(),
     awayTeam: Joi.number().required(),
     homeTeamGoals: Joi.number().required(),
     awayTeamGoals: Joi.number().required(),
     inProgress: Joi.boolean().required(),
   }).error(INVALID_MATCH_DATA);
+
+  private _bodyIsValid = Joi.object({
+    homeTeamGoals: Joi.number().required(),
+    awayTeamGoals: Joi.number().required(),
+  }).error(new Error('TODO'));
 
   private _match = Match;
 
@@ -37,12 +42,16 @@ export class MatchsValidation {
     return validId;
   }
 
+  public async validateBody(body: GoalsStatus) {
+    return this._bodyIsValid.validateAsync(body);
+  }
+
   public async validate(newMatch: NewMatch) {
     await this.validateTeams({
       homeTeam: newMatch.homeTeam,
       awayTeam: newMatch.awayTeam,
     });
-    return this._isValid.validateAsync(newMatch);
+    return this._matchIsValid.validateAsync(newMatch);
   }
 }
 

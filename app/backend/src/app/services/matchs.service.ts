@@ -1,6 +1,6 @@
 import Club from '../../database/models/Club.model';
 import Match from '../../database/models/Match.model';
-import { NewMatch } from '../domain';
+import { GoalsStatus, NewMatch } from '../domain';
 import { MATCHS_NOT_FOUND } from '../errors/matchs.error';
 
 class MatchsService {
@@ -53,12 +53,16 @@ class MatchsService {
     return newMatch;
   }
 
-  public async editMatch(id: number) {
-    const updatedMatch = await this._match.update(
-      { inProgress: false },
-      { where: { id } },
-    );
-    console.log(updatedMatch);
+  public async editMatch(id: number, body?: GoalsStatus) {
+    if (body) {
+      const { homeTeamGoals, awayTeamGoals } = body;
+      await this._match.update(
+        { homeTeamGoals, awayTeamGoals },
+        { where: { id } },
+      );
+      return id;
+    }
+    await this._match.update({ inProgress: false }, { where: { id } });
     return id;
   }
 }

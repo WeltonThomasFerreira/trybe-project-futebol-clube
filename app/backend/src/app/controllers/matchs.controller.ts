@@ -1,5 +1,5 @@
 import { IncomingHttpHeaders } from 'node:http2';
-import { NewMatch } from '../domain';
+import { GoalsStatus, NewMatch } from '../domain';
 import loginService from '../services/login.service';
 import matchsService from '../services/matchs.service';
 import matchsValidation from '../validations/matchs.validation';
@@ -24,9 +24,12 @@ export class MatchsController {
     return this._matchsService.createMatch(validMatch);
   }
 
-  public async patch(headers: IncomingHttpHeaders, id: string) {
-    // await this._loginService.authorize(headers.authorization);
+  public async patch(id: string, body?: GoalsStatus) {
     const validId = await this._matchsValidation.validateId(id);
+    if (body) {
+      const validBody = await this._matchsValidation.validateBody(body);
+      return this._matchsService.editMatch(validId, validBody);
+    }
     return this._matchsService.editMatch(validId);
   }
 }

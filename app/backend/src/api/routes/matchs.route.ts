@@ -23,9 +23,18 @@ matchsRoute.post('/', async (req, res, next) => {
   }
 });
 
+matchsRoute.patch('/:id', async (req, res, next) => {
+  try {
+    const response = await matchsController.patch(req.params.id, req.body);
+    return res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
 matchsRoute.patch('/:id/finish', async (req, res, next) => {
   try {
-    const response = await matchsController.patch(req.headers, req.params.id);
+    const response = await matchsController.patch(req.params.id);
     return res.status(200).json(response);
   } catch (error) {
     next(error);
