@@ -4,7 +4,7 @@ import Club from '../../database/models/Club.model';
 import { ClubPlusMatch, Leaderboard } from '../domain';
 // import { } from '../errors/leaderboard.error';
 
-export class LeaderboardService {
+export class LeaderboardHomeService {
   private _club = Club;
 
   private _map: Leaderboard[];
@@ -18,22 +18,15 @@ export class LeaderboardService {
       if (match.homeTeamGoals === match.awayTeamGoals) totalPoints = 1;
       return totalPoints;
     });
-    const awayPoints = club.awayClub.map((match) => {
-      let totalPoints = 0;
-      if (match.awayTeamGoals > match.homeTeamGoals) totalPoints = 3;
-      if (match.homeTeamGoals === match.awayTeamGoals) totalPoints = 1;
-      return totalPoints;
-    });
     this._isTheFunctionOk = true;
     return (
       homePoints.reduce((acc, cur) => acc + cur)
-      + awayPoints.reduce((acc, cur) => acc + cur)
     );
   }
 
   private calculateTotalGames(club: ClubPlusMatch) {
     this._isTheFunctionOk = true;
-    return club.homeClub.length + club.awayClub.length;
+    return club.homeClub.length;
   }
 
   private calculateTotalVictories(club: ClubPlusMatch) {
@@ -42,15 +35,9 @@ export class LeaderboardService {
       if (match.homeTeamGoals > match.awayTeamGoals) totalVictories = 1;
       return totalVictories;
     });
-    const awayVictories = club.awayClub.map((match) => {
-      let totalVictories = 0;
-      if (match.awayTeamGoals > match.homeTeamGoals) totalVictories = 1;
-      return totalVictories;
-    });
     this._isTheFunctionOk = true;
     return (
       homeVictories.reduce((acc, cur) => acc + cur)
-      + awayVictories.reduce((acc, cur) => acc + cur)
     );
   }
 
@@ -60,15 +47,9 @@ export class LeaderboardService {
       if (match.homeTeamGoals === match.awayTeamGoals) totalDraws = 1;
       return totalDraws;
     });
-    const awayDraws = club.awayClub.map((match) => {
-      let totalDraws = 0;
-      if (match.awayTeamGoals === match.homeTeamGoals) totalDraws = 1;
-      return totalDraws;
-    });
     this._isTheFunctionOk = true;
     return (
       homeDraws.reduce((acc, cur) => acc + cur)
-      + awayDraws.reduce((acc, cur) => acc + cur)
     );
   }
 
@@ -78,35 +59,25 @@ export class LeaderboardService {
       if (match.homeTeamGoals < match.awayTeamGoals) totalLoses = 1;
       return totalLoses;
     });
-    const awayLoses = club.awayClub.map((match) => {
-      let totalLoses = 0;
-      if (match.awayTeamGoals < match.homeTeamGoals) totalLoses = 1;
-      return totalLoses;
-    });
     this._isTheFunctionOk = true;
     return (
       homeLoses.reduce((acc, cur) => acc + cur)
-      + awayLoses.reduce((acc, cur) => acc + cur)
     );
   }
 
   private calculateGoalsFavor(club: ClubPlusMatch) {
     const homeGoalsFavor = club.homeClub.map((match) => match.homeTeamGoals);
-    const awayGoalsFavor = club.awayClub.map((match) => match.awayTeamGoals);
     this._isTheFunctionOk = true;
     return (
       homeGoalsFavor.reduce((acc, cur) => acc + cur)
-      + awayGoalsFavor.reduce((acc, cur) => acc + cur)
     );
   }
 
   private calculateGoalsOwn(club: ClubPlusMatch) {
     const homeGoalsOwn = club.homeClub.map((match) => match.awayTeamGoals);
-    const awayGoalsOwn = club.awayClub.map((match) => match.homeTeamGoals);
     this._isTheFunctionOk = true;
     return (
       homeGoalsOwn.reduce((acc, cur) => acc + cur)
-      + awayGoalsOwn.reduce((acc, cur) => acc + cur)
     );
   }
 
@@ -184,4 +155,4 @@ export class LeaderboardService {
   }
 }
 
-export default new LeaderboardService();
+export default new LeaderboardHomeService();
