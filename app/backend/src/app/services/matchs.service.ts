@@ -1,5 +1,6 @@
 import Club from '../../database/models/Club.model';
 import Match from '../../database/models/Match.model';
+import { NewMatch } from '../domain';
 import { MATCHS_NOT_FOUND } from '../errors/matchs.error';
 
 class MatchsService {
@@ -43,6 +44,13 @@ class MatchsService {
     });
     if (matchs.length === 0) throw MATCHS_NOT_FOUND;
     return matchs;
+  }
+
+  public async createMatch(match: NewMatch) {
+    const newMatch = await this._match.create(match);
+    const matchValues = Object.values(newMatch);
+    newMatch.id = matchValues[matchValues.length - 1];
+    return newMatch;
   }
 }
 
