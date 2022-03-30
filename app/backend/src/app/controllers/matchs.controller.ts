@@ -23,6 +23,12 @@ export class MatchsController {
     const validMatch = await this._matchsValidation.validate(newMatch);
     return this._matchsService.createMatch(validMatch);
   }
+
+  public async patch(headers: IncomingHttpHeaders, id: string) {
+    // await this._loginService.authorize(headers.authorization);
+    const validId = await this._matchsValidation.validateId(id);
+    return this._matchsService.editMatch(validId);
+  }
 }
 
 export default new MatchsController();

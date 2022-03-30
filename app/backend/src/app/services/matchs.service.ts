@@ -52,6 +52,15 @@ class MatchsService {
     newMatch.id = matchValues[matchValues.length - 1];
     return newMatch;
   }
+
+  public async editMatch(id: number) {
+    const updatedMatch = await this._match.update(
+      { inProgress: false },
+      { where: { id } },
+    );
+    console.log(updatedMatch);
+    return id;
+  }
 }
 
 export default new MatchsService();

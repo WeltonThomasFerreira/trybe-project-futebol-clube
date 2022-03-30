@@ -17,6 +17,15 @@ matchsRoute.post('/', async (req, res, next) => {
   try {
     const { headers, body } = req;
     const response = await matchsController.post(headers, body);
+    return res.status(201).json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+matchsRoute.patch('/:id/finish', async (req, res, next) => {
+  try {
+    const response = await matchsController.patch(req.headers, req.params.id);
     return res.status(200).json(response);
   } catch (error) {
     next(error);
