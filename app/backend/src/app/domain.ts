@@ -14,6 +14,7 @@ export interface UserLogged {
 }
 
 export interface NewMatch {
+  id?: number;
   homeTeam: number;
   awayTeam: number;
   homeTeamGoals: number;
@@ -29,4 +30,11 @@ export interface Teams {
 export interface GoalsStatus {
   homeTeamGoals: number;
   awayTeamGoals: number;
+}
+
+export interface ClubPlusMatch {
+  id: number;
+  clubName: string;
+  homeClub: NewMatch[];
+  awayClub: NewMatch[];
 }
