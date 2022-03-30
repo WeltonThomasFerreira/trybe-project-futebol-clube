@@ -20,7 +20,27 @@ class MatchsService {
         },
       ],
     });
-    console.log(matchs);
+    if (matchs.length === 0) throw MATCHS_NOT_FOUND;
+    return matchs;
+  }
+
+  public async getInProgress(query: string) {
+    const inProgress = query === 'true';
+    const matchs = await this._match.findAll({
+      where: { inProgress },
+      include: [
+        {
+          model: Club,
+          attributes: ['clubName'],
+          as: 'homeClub',
+        },
+        {
+          model: Club,
+          attributes: ['clubName'],
+          as: 'awayClub',
+        },
+      ],
+    });
     if (matchs.length === 0) throw MATCHS_NOT_FOUND;
     return matchs;
   }

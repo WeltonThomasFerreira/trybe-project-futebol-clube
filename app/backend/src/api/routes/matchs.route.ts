@@ -5,7 +5,8 @@ const matchsRoute = Router();
 
 matchsRoute.get('/', async (req, res, next) => {
   try {
-    const response = await matchsController.get();
+    const inProgress = req.query.inProgress as string;
+    const response = await matchsController.get(inProgress);
     return res.status(200).json(response);
   } catch (error) {
     next(error);
